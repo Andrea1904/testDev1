@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba de Ascenso · Desarrollador 2 → 1 · Satrack</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --navy-950:#04201E;
+    --navy-900:#0A2E2B;
+    --navy-800:#123F3B;
+    --teal-500:#14C7B4;
+    --teal-300:#7EE8DA;
+    --amber:#F2A93B;
+    --red:#E2645A;
+    --paper:#EAF6F3;
+    --paper-dim:#9FC3BC;
+    --ink-dim:#7FA39C;
+    --radius:4px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--navy-950);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.6;
+  }
+  ::selection{background:var(--teal-500);color:var(--navy-950)}
+  h1,h2,.serif{font-family:'Fraunces',serif}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  textarea,input{font-family:inherit}
+
+  .page{max-width:760px;margin:0 auto;padding:40px 24px 100px}
+
+  /* ---------- HEADER / BRAND ---------- */
+  .brand-row{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+  .brand-mark{width:26px;height:26px;border-radius:50%;background:conic-gradient(var(--teal-500),var(--teal-300),var(--teal-500));flex-shrink:0}
+  .brand-word{font-size:15px;font-weight:700;letter-spacing:.02em;color:var(--paper)}
+  .brand-word span{color:var(--teal-500)}
+
+  h1{font-size:30px;font-weight:600;color:var(--paper);margin-bottom:10px;line-height:1.25}
+  .subtitle{color:var(--ink-dim);font-size:14px;max-width:58ch;margin-bottom:8px}
+  .subtitle.instructions{margin-bottom:28px}
+
+  /* ---------- META CAPTURE ---------- */
+  .meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    background:var(--navy-900);
+    border:1px solid var(--navy-800);
+    border-radius:var(--radius);
+    padding:22px;
+    margin-bottom:24px;
+  }
+  .meta div{display:flex;flex-direction:column;gap:6px}
+  .meta label{font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.05em}
+  .meta input{
+    background:var(--navy-950);
+    border:1px solid var(--navy-800);
+    border-radius:var(--radius);
+    padding:9px 11px;
+    color:var(--paper);
+    font-size:14px;
+  }
+  .meta input:focus{outline:none;border-color:var(--teal-500)}
+
+  #btn-start{
+    background:var(--teal-500);
+    color:var(--navy-950);
+    padding:14px 26px;
+    border-radius:var(--radius);
+    font-size:14px;
+    font-weight:700;
+    width:100%;
+  }
+  #btn-start:hover{background:var(--teal-300)}
+  #start-error{display:block;color:var(--red);font-size:12px;margin-top:10px;min-height:16px}
+
+  /* ---------- TIMER BAR ---------- */
+  .timer-bar{
+    position:sticky;
+    top:0;
+    z-index:10;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(4,32,30,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--navy-800);
+    padding:12px 24px;
+    margin:0 -24px 28px;
+  }
+  #timer-candidato{font-size:13px;color:var(--ink-dim)}
+  #timer-clock{font-family:'Fraunces',serif;font-size:22px;color:var(--teal-500);font-variant-numeric:tabular-nums}
+  #timer-clock.low{color:var(--red)}
+
+  /* ---------- BLOCKS ---------- */
+  .block{margin-bottom:44px}
+  .block-eyebrow{font-size:11px;color:var(--teal-500);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .block-title{font-size:22px;font-weight:600;color:var(--paper);margin-bottom:8px}
+  .block-note{color:var(--ink-dim);font-size:13px;margin-bottom:22px;max-width:60ch}
+
+  .question{margin-bottom:26px}
+  .q-label{font-size:11px;color:var(--paper-dim);margin-bottom:8px;display:flex;justify-content:space-between}
+  .q-text{font-size:15px;color:var(--paper);margin-bottom:12px;line-height:1.65}
+  .q-text code{background:var(--navy-800);padding:1px 5px;border-radius:2px;font-size:13px}
+
+  pre.code-block{
+    background:#02120F;
+    border:1px solid var(--navy-800);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    overflow-x:auto;
+    font-size:13px;
+    line-height:1.55;
+    color:#B9F3E8;
+    margin-bottom:14px;
+    font-family:'SF Mono',Consolas,monospace;
+    white-space:pre;
+  }
+  table.data-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:14px;
+    font-size:13px;
+  }
+  table.data-table th, table.data-table td{
+    border:1px solid var(--navy-800);
+    padding:7px 10px;
+    text-align:left;
+    color:var(--paper);
+  }
+  table.data-table th{background:var(--navy-900);color:var(--teal-300);font-weight:600}
+
+  textarea.answer{
+    width:100%;
+    background:var(--navy-900);
+    border:1px solid var(--navy-800);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    color:var(--paper);
+    font-size:14px;
+    line-height:1.6;
+    resize:vertical;
+    min-height:110px;
+  }
+  textarea.answer:focus{outline:none;border-color:var(--teal-500)}
+  textarea.answer::placeholder{color:#4C6B65}
+
+  /* ---------- SAVE BAR ---------- */
+  .save-bar{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:rgba(4,32,30,0.95);
+    backdrop-filter:blur(6px);
+    border-top:1px solid var(--navy-800);
+    padding:14px 24px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:16px;
+    z-index:20;
+  }
+  #btn-save{
+    background:var(--teal-500);
+    color:var(--navy-950);
+    padding:12px 24px;
+    border-radius:var(--radius);
+    font-size:14px;
+    font-weight:700;
+  }
+  #btn-save:hover{background:var(--teal-300)}
+  #save-status{font-size:12px;color:var(--ink-dim)}
+
+  #test-screen{display:none}
+
+  @media (max-width:600px){
+    .meta{grid-template-columns:1fr}
+    .page{padding:24px 16px 100px}
+    .timer-bar{margin:0 -16px 24px;padding:10px 16px}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ============ START SCREEN ============ -->
+  <div id="start-screen">
+    <div class="brand-row">
+      <div class="brand-mark"></div>
+      <div class="brand-word">sat<span>rack</span></div>
+    </div>
+    <h1>Prueba de Ascenso — Desarrollador 2 → Desarrollador 1</h1>
+    <p class="subtitle">Evaluación de análisis, optimización, diseño de estructuras de datos y arquitectura aplicados a casos reales de telemetría y flotas de Satrack.</p>
+    <p class="subtitle instructions">No necesitas conocimiento previo de GPS o flotas — todo el contexto está en cada enunciado. En cada pregunta escribe brevemente tu razonamiento antes de la respuesta final: nos interesa más <em>cómo</em> llegaste a ella que si es exacta. Al terminar, tendrás 5 minutos para explicar en voz alta cómo resolviste una pregunta a tu elección de los Bloques 2, 4 o 5.</p>
+
+    <div class="meta">
+      <div><label>Candidato</label><input id="meta-candidato" type="text" value="Yamel Andrés Puentes"></div>
+      <div><label>Fecha</label><input id="meta-fecha" type="date"></div>
+      <div><label>Cargo actual</label><input id="meta-cargo-actual" type="text" value="Desarrollador 2"></div>
+      <div><label>Cargo al que aplica</label><input id="meta-cargo" type="text" value="Desarrollador 1"></div>
+    </div>
+
+    <button id="btn-start" type="button" onclick="startTest()">Iniciar prueba →</button>
+    <span id="start-error"></span>
+  </div>
+
+  <!-- ============ TEST SCREEN ============ -->
+  <div id="test-screen">
+
+    <div class="timer-bar">
+      <span id="timer-candidato"></span>
+      <span id="timer-clock">60:00</span>
+    </div>
+
+    <!-- BLOQUE 1 -->
+    <div class="block" data-block="Bloque 1 — Estimación (Fermi)">
+      <div class="block-eyebrow">Bloque 1 · 15 pts</div>
+      <div class="block-title">Estimación de escala</div>
+      <div class="block-note">Satrack tiene actualmente ~55.000 vehículos activos entre Colombia, Ecuador, Panamá y Centroamérica.</div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 1.1</span><span>15 pts</span></div>
+        <div class="q-text">Cada vehículo reporta: una posición GPS cada 5 segundos, un evento de alarma en promedio cada 40 minutos, y un evento de geocerca en promedio cada 15 minutos. Estima cuántos registros totales (posiciones + alarmas + geocercas) genera la flota completa en un día. Muestra tu razonamiento paso a paso — no basta con el número final. Luego, estima cuánto espacio en disco ocuparía un año de esos datos si cada registro pesa en promedio 180 bytes, asumiendo que aplicas una compresión que reduce el volumen a la tercera parte. Indica qué asumirías o simplificarías si te faltara un dato exacto.</div>
+        <textarea class="answer" placeholder="Escribe tu razonamiento y estimación aquí..." data-qid="1.1"></textarea>
+      </div>
+    </div>
+
+    <!-- BLOQUE 2 -->
+    <div class="block" data-block="Bloque 2 — Complejidad y optimización">
+      <div class="block-eyebrow">Bloque 2 · 20 pts</div>
+      <div class="block-title">Complejidad y optimización</div>
+      <div class="block-note">Este fragmento calcula, para cada vehículo, cuántas alarmas de exceso de velocidad tuvo en el último mes, comparando contra una lista de alarmas ya procesadas.</div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 2.1</span><span>12 pts</span></div>
+        <pre class="code-block">List&lt;Vehiculo&gt; vehiculos = ObtenerVehiculosActivos(); // ~55.000
+List&lt;Alarma&gt; alarmasProcesadas = ObtenerAlarmasDelMes(); // ~40.000
+
+foreach (var vehiculo in vehiculos)
+{
+    int contador = 0;
+    foreach (var alarma in alarmasProcesadas)
+    {
+        if (alarma.VehiculoId == vehiculo.Id &amp;&amp; alarma.Tipo == "ExcesoVelocidad")
+        {
+            contador++;
+        }
+    }
+    vehiculo.AlarmasExceso = contador;
+}</pre>
+        <div class="q-text"><b>a)</b> ¿Cuál es la complejidad de este fragmento en notación Big-O, en función del número de vehículos (V) y alarmas (A)? <b>b)</b> Con los volúmenes reales de Satrack (~55.000 x ~40.000), ¿por qué esto se vuelve un problema práctico y no solo teórico? <b>c)</b> Reescribe la solución con una complejidad mejor — incluye el código.</div>
+        <textarea class="answer" placeholder="a), b) y c)..." data-qid="2.1"></textarea>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 2.2</span><span>8 pts</span></div>
+        <div class="q-text">Tu solución optimizada probablemente usa una estructura auxiliar (diccionario, agrupación, índice). ¿Qué costo adicional introduce esa estructura (memoria, tiempo de construcción) y en qué escenario de Satrack ese costo SÍ importaría lo suficiente como para reconsiderar el enfoque?</div>
+        <textarea class="answer" placeholder="Escribe tu respuesta aquí..." data-qid="2.2"></textarea>
+      </div>
+    </div>
+
+    <!-- BLOQUE 3 -->
+    <div class="block" data-block="Bloque 3 — Diseño de estructura de datos">
+      <div class="block-eyebrow">Bloque 3 · 15 pts</div>
+      <div class="block-title">Diseño de estructura de datos</div>
+      <div class="block-note">Cada vehículo puede tener varias geocercas activas asignadas (zonas permitidas, zonas restringidas, rutas). Con ~55.000 vehículos y un promedio de 4 geocercas por vehículo, el sistema recibe una posición GPS cada 5 segundos por vehículo y debe determinar en tiempo real si esa posición cae dentro o fuera de cada una de sus geocercas asignadas.</div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 3.1</span><span>15 pts</span></div>
+        <div class="q-text">Comparar la posición contra cada polígono de cada geocerca con un algoritmo punto-en-polígono clásico, uno por uno, no escala a este volumen. Propón una estructura o estrategia de indexado espacial (por ejemplo, aunque no exclusivamente: grid de celdas, quad-tree, bounding box previo) que reduzca cuántas comparaciones punto-en-polígono se hacen por posición recibida. Explica: <b>a)</b> cómo funcionaría a alto nivel tu estructura elegida, <b>b)</b> por qué reduce el trabajo real, y <b>c)</b> qué trade-off aceptas (memoria extra, complejidad de mantenimiento, latencia al actualizar geocercas, etc.).</div>
+        <textarea class="answer" placeholder="a), b) y c)..." data-qid="3.1"></textarea>
+      </div>
+    </div>
+
+    <!-- BLOQUE 4 -->
+    <div class="block" data-block="Bloque 4 — Debugging real">
+      <div class="block-eyebrow">Bloque 4 · 25 pts</div>
+      <div class="block-title">Debugging real</div>
+      <div class="block-note">Tres fragmentos de código reales, cada uno con un bug distinto. Identifica el problema, corrígelo con código, y en cada uno señala si queda algún caso límite que tu corrección todavía no cubre.</div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 4.1 — Cálculo de distancia recorrida</span><span>9 pts</span></div>
+        <pre class="code-block">public double CalcularDistanciaRecorrida(List&lt;EventoGPS&gt; eventos)
+{
+    double distanciaTotal = 0;
+
+    for (int i = 1; i &lt; eventos.Count; i++)
+    {
+        var anterior = eventos[i - 1];
+        var actual = eventos[i];
+        distanciaTotal += DistanciaHaversine(anterior.Lat, anterior.Lng, actual.Lat, actual.Lng);
+    }
+
+    return distanciaTotal;
+}</pre>
+        <div class="q-text">Este código suma distancia recorrida incluso cuando el vehículo está parqueado (por el ruido natural del sensor GPS, que hace que la posición "salte" unos metros aunque el vehículo no se mueva). <b>a)</b> Corrige el código, <b>b)</b> ¿qué caso límite queda sin cubrir con tu corrección? (piensa en un vehículo que se mueve muy lento en tráfico pesado, por ejemplo).</div>
+        <textarea class="answer" placeholder="a) código corregido, b) caso límite..." data-qid="4.1"></textarea>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 4.2 — Kilometraje mensual</span><span>9 pts</span></div>
+        <pre class="code-block">public List&lt;ReporteVehiculo&gt; GenerarReporteMensual(List&lt;int&gt; vehiculoIds)
+{
+    var reportes = new List&lt;ReporteVehiculo&gt;();
+
+    foreach (var id in vehiculoIds) // ~55.000 vehículos
+    {
+        var eventos = _context.EventosGPS
+            .Where(e =&gt; e.VehiculoId == id &amp;&amp; e.Fecha &gt;= inicioMes)
+            .ToList();
+
+        reportes.Add(new ReporteVehiculo { VehiculoId = id, Km = CalcularDistanciaRecorrida(eventos) });
+    }
+
+    return reportes;
+}</pre>
+        <div class="q-text"><b>a)</b> Identifica el problema de rendimiento evidente, <b>b)</b> reescribe la solución evitándolo (código), <b>c)</b> con ~55.000 vehículos y un mes de datos GPS por vehículo, ¿tu solución nueva podría introducir un problema distinto (de memoria, por ejemplo)? Explica cómo lo mitigarías.</div>
+        <textarea class="answer" placeholder="a), b) y c)..." data-qid="4.2"></textarea>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 4.3 — Entrada a geocerca</span><span>7 pts</span></div>
+        <pre class="code-block">public bool DetectarEntradaGeocerca(Coordenada posicionActual, Poligono geocerca, bool estabaDentroAntes)
+{
+    bool estaDentroAhora = PuntoEnPoligono(posicionActual, geocerca);
+
+    if (estaDentroAhora || estabaDentroAntes)
+    {
+        return true; // Dispara evento de "entrada a geocerca"
+    }
+
+    return false;
+}</pre>
+        <table class="data-table">
+          <tr><th>Hora</th><th>¿Dentro del polígono?</th><th>estabaDentroAntes</th></tr>
+          <tr><td>09:00</td><td>No</td><td>false</td></tr>
+          <tr><td>09:01</td><td>No</td><td>false</td></tr>
+          <tr><td>09:02</td><td>Sí</td><td>false</td></tr>
+          <tr><td>09:03</td><td>Sí</td><td>true</td></tr>
+          <tr><td>09:04</td><td>Sí</td><td>true</td></tr>
+          <tr><td>09:05</td><td>No</td><td>true</td></tr>
+        </table>
+        <div class="q-text">Con esta secuencia de posiciones para el mismo vehículo: <b>a)</b> ¿cuántas veces se dispara el evento de "entrada" tal como está el código?, <b>b)</b> corrígelo para que solo dispare en la transición real de fuera→dentro.</div>
+        <textarea class="answer" placeholder="a) y b)..." data-qid="4.3"></textarea>
+      </div>
+    </div>
+
+    <!-- BLOQUE 5 -->
+    <div class="block" data-block="Bloque 5 — Arquitectura a escala">
+      <div class="block-eyebrow">Bloque 5 · 15 pts</div>
+      <div class="block-title">Arquitectura a escala</div>
+      <div class="block-note">Ya corregiste la lógica de detección de geocercas (Bloque 4.3) y diseñaste un índice espacial (Bloque 3). Ahora hay que sostenerlo en producción.</div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 5.1</span><span>15 pts</span></div>
+        <div class="q-text">Con ~55.000 vehículos reportando posición cada 5 segundos, eso son más de 10.000 posiciones por segundo llegando al sistema, cada una necesitando pasar por tu lógica de detección de geocercas. Describe, a alto nivel, cómo estructurarías el procesamiento para que esto no se convierta en un cuello de botella — considera: <b>a)</b> ¿el procesamiento debería ser síncrono (bloquea la ingesta) o asíncrono (se desacopla)?, justifica, <b>b)</b> ¿cómo escalarías horizontalmente si el número de vehículos se duplica el próximo año?, <b>c)</b> ¿qué pasa si el componente que detecta geocercas se cae 10 minutos? ¿Se pierden datos, se procesan tarde, o algo distinto? Justifica tu diseño.</div>
+        <textarea class="answer" placeholder="a), b) y c)..." data-qid="5.1"></textarea>
+      </div>
+    </div>
+
+    <!-- BLOQUE 6 -->
+    <div class="block" data-block="Bloque 6 — IA en la resolución de problemas">
+      <div class="block-eyebrow">Bloque 6 · 10 pts</div>
+      <div class="block-title">IA en la resolución de problemas</div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 6.1</span><span>4 pts</span></div>
+        <div class="q-text">Si tuvieras acceso a una IA (Copilot, ChatGPT, Claude) durante esta prueba, ¿en cuál de los bloques anteriores la usarías primero, y qué le pedirías exactamente? Sé específico con el prompt, no solo "le pediría ayuda".</div>
+        <textarea class="answer" placeholder="Escribe tu respuesta aquí..." data-qid="6.1"></textarea>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 6.2</span><span>3 pts</span></div>
+        <div class="q-text">¿Qué parte de la respuesta de la IA validarías siempre a mano antes de usarla en producción, en un problema como el del Bloque 5 (arquitectura a escala)?</div>
+        <textarea class="answer" placeholder="Escribe tu respuesta aquí..." data-qid="6.2"></textarea>
+      </div>
+
+      <div class="question">
+        <div class="q-label"><span>Pregunta 6.3</span><span>3 pts</span></div>
+        <div class="q-text">Cuenta un caso real (de tu trabajo actual como Desarrollador 2) en el que una IA generativa te dio una solución que parecía correcta pero tuviste que corregir. ¿Qué fue lo que falló?</div>
+        <textarea class="answer" placeholder="Escribe tu respuesta aquí..." data-qid="6.3"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="save-bar" id="save-bar" style="display:none">
+    <button id="btn-save" type="button" onclick="guardarRespuestas()">Guardar respuestas</button>
+    <span id="save-status"></span>
+  </div>
+
+</div>
+
+<script>
+const SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz-d7obLHgGZj46JMPLJL6E-ZL-QSwl0eZ6KDbtJtVugE3UN5IBQLnCF7l8xlNntpfo/exec";
+const DURACION_SEGUNDOS = 60 * 60;
+
+let tiempoRestante = DURACION_SEGUNDOS;
+let intervaloTimer = null;
+let candidatoNombre = "";
+
+function startTest(){
+  const nombre = document.getElementById('meta-candidato').value.trim();
+  const errorEl = document.getElementById('start-error');
+  if(!nombre){
+    errorEl.textContent = "Escribe el nombre del candidato antes de iniciar.";
+    return;
+  }
+  candidatoNombre = nombre;
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('test-screen').style.display = 'block';
+  document.getElementById('save-bar').style.display = 'flex';
+  document.getElementById('timer-candidato').textContent = nombre + " · " + document.getElementById('meta-cargo-actual').value + " → " + document.getElementById('meta-cargo').value;
+  iniciarTimer();
+}
+
+function iniciarTimer(){
+  actualizarReloj();
+  intervaloTimer = setInterval(() => {
+    tiempoRestante--;
+    actualizarReloj();
+    if(tiempoRestante <= 0){
+      clearInterval(intervaloTimer);
+      alert("Se acabó el tiempo. Guarda tus respuestas ahora — el formulario sigue disponible para que termines de escribir.");
+    }
+  }, 1000);
+}
+function actualizarReloj(){
+  const m = Math.floor(Math.max(tiempoRestante,0)/60);
+  const s = Math.max(tiempoRestante,0)%60;
+  const el = document.getElementById('timer-clock');
+  el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  el.classList.toggle('low', tiempoRestante < 300);
+}
+
+function recolectarRespuestas(){
+  const filas = [];
+  const fecha = document.getElementById('meta-fecha').value || new Date().toISOString().slice(0,10);
+  const cargoActual = document.getElementById('meta-cargo-actual').value;
+  const cargoAplica = document.getElementById('meta-cargo').value;
+  const tiempoUsadoMin = Math.round((DURACION_SEGUNDOS - tiempoRestante)/60);
+
+  document.querySelectorAll('.block').forEach(block => {
+    const bloqueNombre = block.getAttribute('data-block');
+    block.querySelectorAll('.answer').forEach(ta => {
+      filas.push({
+        candidato: `${candidatoNombre} (${cargoActual} → ${cargoAplica})`,
+        fecha_envio: new Date().toISOString(),
+        bloque: bloqueNombre,
+        pregunta: ta.getAttribute('data-qid'),
+        puntos_max: '',
+        respuesta: ta.value,
+        tiempo_usado_min: tiempoUsadoMin
+      });
+    });
+  });
+  return filas;
+}
+
+function descargarTxt(filas){
+  let texto = `PRUEBA DE ASCENSO — DESARROLLADOR 2 → 1\nCandidato: ${candidatoNombre}\nFecha: ${document.getElementById('meta-fecha').value}\n\n`;
+  filas.forEach(f => {
+    texto += `\n[${f.bloque}] Pregunta ${f.pregunta}\n${f.respuesta || '(sin respuesta)'}\n${'-'.repeat(40)}\n`;
+  });
+  const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `respuestas_${candidatoNombre.replace(/\s+/g,'_')}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function guardarRespuestas(){
+  const statusEl = document.getElementById('save-status');
+  const filas = recolectarRespuestas();
+
+  descargarTxt(filas);
+
+  statusEl.textContent = 'Enviando a Google Sheets...';
+  try{
+    await fetch(SHEET_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ rows: filas })
+    });
+    statusEl.textContent = 'Respaldo .txt descargado y enviado al Sheet.';
+  }catch(e){
+    statusEl.textContent = 'Respaldo .txt descargado. No se pudo confirmar el envío al Sheet — revisa la conexión.';
+  }
+}
+</script>
+</body>
+</html>
